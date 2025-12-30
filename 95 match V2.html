@@ -1,0 +1,576 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>$95 年费信用卡对比（按不同卡设置点数价值）</title>
+  <style>
+    :root{
+      --bg: #f6f9ff;
+      --card: #ffffff;
+      --line: #e8eef9;
+      --text: #16223a;
+      --muted:#5b6b8a;
+      --brand:#2f6bff;
+      --good:#0a8f5b;
+      --bad:#d43c3c;
+      --shadow: 0 10px 30px rgba(22,34,58,.08);
+      --radius: 16px;
+    }
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 700px at 10% 0%, #e9f0ff 0%, var(--bg) 55%, #f7fbff 100%);
+    }
+    .wrap{ max-width: 1150px; margin:0 auto; padding: 26px 18px 40px; }
+    header{
+      display:flex; gap:14px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    h1{ font-size: 20px; margin: 0; letter-spacing:.2px; }
+    .sub{ margin:6px 0 0; color:var(--muted); font-size: 13px; line-height:1.55; max-width: 860px;}
+    .pill{
+      display:inline-flex; gap:8px; align-items:center;
+      padding: 8px 12px; border:1px solid var(--line); border-radius: 999px;
+      background: rgba(255,255,255,.65);
+      box-shadow: 0 6px 18px rgba(22,34,58,.06);
+      font-size: 12px; color: var(--muted);
+    }
+    .pill b{ color: var(--text); }
+    .grid{
+      display:grid; grid-template-columns: 1.05fr 1fr; gap: 14px;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+    .panel{
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 16px;
+    }
+    .panel h2{
+      margin: 0 0 12px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 650;
+      letter-spacing: .2px;
+    }
+    .rows{ display:grid; gap: 10px; }
+    .row{
+      display:grid; grid-template-columns: 1fr 150px; gap: 10px; align-items:center;
+    }
+    .row label{ font-size: 12px; color: var(--muted); }
+    input[type="number"]{
+      width:100%; padding: 10px 10px;
+      border:1px solid var(--line); border-radius: 12px;
+      background: #fbfdff; color: var(--text);
+      outline: none;
+    }
+    input[type="number"]:focus{ border-color: rgba(47,107,255,.45); box-shadow: 0 0 0 4px rgba(47,107,255,.12); }
+    .section{
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px dashed var(--line);
+    }
+    .controls{
+      display:flex; gap: 10px; flex-wrap:wrap; align-items:center;
+    }
+    .btn{
+      cursor:pointer;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: #fbfdff;
+      color: var(--text);
+      font-size: 12px;
+    }
+    .btn:hover{ border-color: rgba(47,107,255,.35); }
+    .toggle{ display:flex; gap:8px; align-items:center; font-size: 12px; color: var(--muted); }
+    .toggle input{ transform: scale(1.08); }
+    .mini{
+      font-size: 12px; color: var(--muted);
+      display:flex; justify-content:space-between; align-items:center; gap:10px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fbfdff;
+      margin-top: 10px;
+    }
+    .mini .right{ display:flex; gap:8px; align-items:center; flex-wrap:wrap; justify-content:flex-end; }
+    .mini b{ color: var(--text); }
+    table{
+      width:100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th, td{
+      padding: 10px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    th{
+      text-align:left;
+      color: var(--muted);
+      font-weight: 650;
+      background: linear-gradient(180deg, rgba(246,249,255,.0), rgba(246,249,255,.55));
+      position: sticky; top: 0;
+    }
+    .money{ font-variant-numeric: tabular-nums; }
+    .good{ color: var(--good); font-weight: 650; }
+    .bad{ color: var(--bad); font-weight: 650; }
+    .muted{ color: var(--muted); }
+    details{ margin-top: 10px; }
+    summary{ cursor:pointer; color: var(--brand); font-size: 12px; }
+    pre{
+      white-space: pre-wrap;
+      background:#fbfdff;
+      border:1px solid var(--line);
+      padding: 10px;
+      border-radius: 12px;
+      overflow:auto;
+      font-size: 11px;
+      color:#2a3a5c;
+    }
+    .hint{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height:1.55;
+    }
+    .badge{
+      display:inline-flex; align-items:center; gap:6px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      color: var(--muted);
+      font-size: 11px;
+      background: #fbfdff;
+    }
+    .brand{ color: var(--brand); font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>$95 年费主流信用卡：量化对比（按不同卡设置点数价值）</h1>
+        <p class="sub">
+          输入你的年消费后，系统会计算每张卡：<b>年回报（不含开卡）</b>、<b>首年净收益</b>、<b>后续年净收益</b>、<b>回本点</b>并排序。
+          <br/>点数卡的“每点价值”可按<strong>不同卡分别设置</strong>（比如你对 UR / C1 miles / TYP / WF points 的估值不同）。
+        </p>
+      </div>
+      <div class="pill">
+        <span>当前模式：</span><b>本地离线计算</b>
+        <span class="badge">可在代码里改倍率/年费/开卡</span>
+      </div>
+    </header>
+
+    <div class="grid">
+      <!-- Left: inputs -->
+      <section class="panel">
+        <h2>1) 年度消费输入（$）</h2>
+        <div class="rows">
+          <div class="row"><label>餐饮（Dining）</label><input id="spend_dining" type="number" min="0" step="50" value="6000"></div>
+          <div class="row"><label>旅行（Travel：机票/酒店/交通等）</label><input id="spend_travel" type="number" min="0" step="50" value="4000"></div>
+          <div class="row"><label>超市（US Supermarket）</label><input id="spend_grocery" type="number" min="0" step="50" value="6000"></div>
+          <div class="row"><label>加油/充电（Gas/EV）</label><input id="spend_gas" type="number" min="0" step="50" value="1500"></div>
+          <div class="row"><label>流媒体（Streaming）</label><input id="spend_stream" type="number" min="0" step="50" value="600"></div>
+          <div class="row"><label>其他（Everything else）</label><input id="spend_other" type="number" min="0" step="50" value="12000"></div>
+        </div>
+
+        <div class="section">
+          <h2>2) 点数价值（按卡分别设置，单位：¢/point）</h2>
+          <div class="rows" id="cppRows"></div>
+
+          <div class="mini">
+            <div>快捷设置：</div>
+            <div class="right">
+              <button class="btn" id="btnConservative">保守（全 1.0¢）</button>
+              <button class="btn" id="btnBaseline">常用（UR 1.25、其余 1.0）</button>
+              <button class="btn" id="btnAggressive">进阶（UR 1.6、C1 1.3、TYP 1.3、WF 1.2）</button>
+            </div>
+          </div>
+
+          <div class="controls" style="margin-top:12px;">
+            <label class="toggle"><input id="includeBonus" type="checkbox" checked> 计入开卡奖励（首年）</label>
+            <label class="toggle"><input id="firstYearFeeWaive" type="checkbox" checked> 计入“首年免年费”规则（如 BCP）</label>
+            <button class="btn" id="resetBtn">重置示例</button>
+          </div>
+
+          <div class="hint">
+            <span class="brand">提示：</span>本页为了“通用+可比较”，默认没有把“旅行门户/portal 的5x/10x”等特殊倍率当作必然发生。
+            如果你确实大量用门户订酒店/机票，你可以在下方规则里把倍率提高，结果会更贴近你的真实情况。
+          </div>
+
+          <details>
+            <summary>展开：内置卡片规则（可直接编辑 JSON）</summary>
+            <pre id="rulesDump"></pre>
+          </details>
+        </div>
+      </section>
+
+      <!-- Right: results -->
+      <section class="panel">
+        <h2>3) 结果（按“后续年净收益”排序）</h2>
+
+        <div class="mini" id="headline"></div>
+
+        <div style="margin-top:10px; overflow:auto; max-height: 62vh; border-radius: 12px;">
+          <table>
+            <thead>
+              <tr>
+                <th>排名</th>
+                <th>卡</th>
+                <th>年费</th>
+                <th>估值</th>
+                <th>年回报（不含开卡）</th>
+                <th>首年净收益</th>
+                <th>后续年净收益</th>
+                <th>回本点</th>
+                <th>一句话适用</th>
+              </tr>
+            </thead>
+            <tbody id="tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="hint">
+          “回本点”= 在你这份消费结构下，需要多少总消费让（年回报 + 年度可用报销）≥ 年费（越低越容易回本）。
+        </div>
+      </section>
+    </div>
+  </div>
+
+<script>
+/**
+ * 说明：
+ * - 点数卡会用 card.cppCents（¢/point）转换为美元价值
+ * - 现金回报卡直接按现金率计算
+ * - BCP 超市 6% 有 $6,000/年上限，这里已处理
+ * - WF Journey 这里加了 $50 年度机票报销（按你能用到计入）
+ *
+ * 你可以自己更新：开卡奖励、年费、倍率等。
+ */
+const CARDS = [
+  {
+    id: "csp",
+    name: "Chase Sapphire Preferred (UR)",
+    currency: "points",
+    cppCents: 1.25, // 默认估值，可在UI调整
+    annualFee: 95,
+    firstYearFee: 95,
+    bonus: { type: "points", amount: 75000, requirement: "3个月花$5,000（示例）" },
+    earn: { dining: 3, travel: 2, grocery: 1, gas: 1, stream: 1, other: 1 },
+    notes: "餐饮+旅行核心；UR 玩法上限高"
+  },
+  {
+    id: "venture",
+    name: "Capital One Venture (C1 miles)",
+    currency: "points",
+    cppCents: 1.00,
+    annualFee: 95,
+    firstYearFee: 95,
+    bonus: { type: "points", amount: 75000, requirement: "3个月花$4,000（示例）" },
+    earn: { dining: 2, travel: 2, grocery: 2, gas: 2, stream: 2, other: 2 },
+    notes: "无脑2x；适合不想管类别的人"
+  },
+  {
+    id: "citi",
+    name: "Citi Strata Premier (TYP)",
+    currency: "points",
+    cppCents: 1.00,
+    annualFee: 95,
+    firstYearFee: 95,
+    bonus: { type: "points", amount: 60000, requirement: "3个月花$4,000（示例）" },
+    earn: { dining: 3, travel: 3, grocery: 3, gas: 3, stream: 1, other: 1 },
+    notes: "超市+餐饮+加油/充电覆盖广，日常党友好"
+  },
+  {
+    id: "wf",
+    name: "Wells Fargo Autograph Journey (WF points)",
+    currency: "points",
+    cppCents: 1.00,
+    annualFee: 95,
+    firstYearFee: 95,
+    bonus: { type: "points", amount: 60000, requirement: "3个月花$4,000（示例）" },
+    earn: { dining: 3, travel: 3, grocery: 1, gas: 1, stream: 1, other: 1 },
+    credits: { type: "cash", amount: 50, note: "年$50机票报销（按能用到计入）" },
+    notes: "旅行/机票支出高时更占优；愿意研究更值"
+  },
+  {
+    id: "bcp",
+    name: "Amex Blue Cash Preferred (Cashback)",
+    currency: "cash",
+    annualFee: 95,
+    firstYearFee: 0, // 常见：首年免年费
+    bonus: { type: "cash", amount: 250, requirement: "6个月花$3,000（示例）" },
+    earn: { dining: 0.01, travel: 0.01, grocery: 0.06, gas: 0.03, stream: 0.06, other: 0.01 },
+    caps: { grocery: 6000, groceryRateAfterCap: 0.01 },
+    notes: "家庭买菜+流媒体强；境外刷有外币手续费"
+  },
+  {
+    id: "boa",
+    name: "BoA Premium Rewards (BoA points)",
+    currency: "points",
+    cppCents: 1.00,
+    annualFee: 95,
+    firstYearFee: 95,
+    bonus: { type: "cash", amount: 600, requirement: "90天花$4,000（示例：60k≈$600）" },
+    earn: { dining: 2, travel: 2, grocery: 1.5, gas: 1.5, stream: 1.5, other: 1.5 },
+    notes: "Preferred Rewards 加成后会更强（此处未加成）"
+  }
+];
+
+const CAT_KEYS = ["dining","travel","grocery","gas","stream","other"];
+const CAT_LABEL = {
+  dining: "餐饮", travel: "旅行", grocery: "超市", gas:"加油/充电", stream:"流媒体", other:"其他"
+};
+
+const $ = (id)=>document.getElementById(id);
+const fmt0 = (n)=>`$${n.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
+const fmt2 = (n)=>`$${n.toFixed(2)}`;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+
+function getSpend(){
+  return {
+    dining: +$("spend_dining").value || 0,
+    travel: +$("spend_travel").value || 0,
+    grocery:+$("spend_grocery").value|| 0,
+    gas:    +$("spend_gas").value    || 0,
+    stream: +$("spend_stream").value || 0,
+    other:  +$("spend_other").value  || 0,
+  };
+}
+
+function pointsToDollars(points, cppCents){ return points * (cppCents/100); }
+
+function earningsValue(card, spend){
+  let value = 0;
+  let total = 0;
+
+  for (const k of CAT_KEYS){
+    const amt = spend[k] || 0;
+    total += amt;
+
+    if (card.currency === "points"){
+      const mult = card.earn[k] ?? 1;
+      value += pointsToDollars(amt * mult, card.cppCents);
+    } else {
+      // cash
+      let rate = card.earn[k] ?? 0.01;
+      if (card.caps && k === "grocery"){
+        const cap = card.caps.grocery;
+        const inCap = Math.min(amt, cap);
+        const over  = Math.max(0, amt - cap);
+        value += inCap * rate + over * (card.caps.groceryRateAfterCap ?? 0.01);
+      } else {
+        value += amt * rate;
+      }
+    }
+  }
+
+  // yearly credits
+  let credits = 0;
+  if (card.credits) credits += card.credits.amount;
+
+  return { value, credits, totalSpend: total };
+}
+
+function bonusValue(card){
+  if (!card.bonus) return 0;
+  if (card.bonus.type === "cash") return card.bonus.amount;
+  if (card.bonus.type === "points") return pointsToDollars(card.bonus.amount, card.cppCents);
+  return 0;
+}
+
+function compute(card, spend, includeBonus, firstYearFeeWaive){
+  const { value, credits, totalSpend } = earningsValue(card, spend);
+  const annualFee = card.annualFee ?? 0;
+  const firstYearFee = firstYearFeeWaive ? (card.firstYearFee ?? annualFee) : annualFee;
+
+  const b = includeBonus ? bonusValue(card) : 0;
+
+  const firstYearNet = value + credits + b - firstYearFee;
+  const ongoingNet   = value + credits - annualFee;
+
+  // breakeven: scale spend until (value+credits) >= fee
+  const effectiveFee = Math.max(0, annualFee - credits);
+  let breakeven = 0;
+  if (effectiveFee === 0) breakeven = 0;
+  else {
+    const rate = (value / Math.max(1, totalSpend)); // $ return per $ spend
+    breakeven = rate > 0 ? (effectiveFee / rate) : Infinity;
+  }
+
+  return { card, value, credits, b, firstYearFee, firstYearNet, ongoingNet, breakeven, totalSpend };
+}
+
+function renderCppInputs(){
+  const container = $("cppRows");
+  container.innerHTML = "";
+
+  CARDS.forEach(card=>{
+    if (card.currency !== "points") return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "row";
+    const label = document.createElement("label");
+    label.innerHTML = `${card.name} <span class="badge">¢/point</span>`;
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0.6";
+    input.max = "3.0";
+    input.step = "0.05";
+    input.value = card.cppCents.toFixed(2);
+    input.id = `cpp_${card.id}`;
+
+    input.addEventListener("input", ()=>{
+      const v = clamp(+input.value || 0, 0.6, 3.0);
+      card.cppCents = v;
+      input.value = v.toFixed(2);
+      render();
+    });
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+    container.appendChild(wrapper);
+  });
+}
+
+function applyPreset(name){
+  if (name === "conservative"){
+    CARDS.forEach(c=>{ if(c.currency==="points") c.cppCents = 1.00; });
+  }
+  if (name === "baseline"){
+    CARDS.forEach(c=>{
+      if (c.currency!=="points") return;
+      c.cppCents = (c.id === "csp") ? 1.25 : 1.00;
+    });
+  }
+  if (name === "aggressive"){
+    CARDS.forEach(c=>{
+      if (c.currency!=="points") return;
+      if (c.id === "csp") c.cppCents = 1.60;
+      else if (c.id === "venture") c.cppCents = 1.30;
+      else if (c.id === "citi") c.cppCents = 1.30;
+      else if (c.id === "wf") c.cppCents = 1.20;
+      else c.cppCents = 1.10;
+    });
+  }
+  // sync UI
+  CARDS.forEach(c=>{
+    if (c.currency==="points"){
+      const el = document.getElementById(`cpp_${c.id}`);
+      if (el) el.value = c.cppCents.toFixed(2);
+    }
+  });
+  render();
+}
+
+function render(){
+  const spend = getSpend();
+  const includeBonus = $("includeBonus").checked;
+  const firstYearFeeWaive = $("firstYearFeeWaive").checked;
+
+  const results = CARDS.map(c => compute(c, spend, includeBonus, firstYearFeeWaive))
+                      .sort((a,b)=> b.ongoingNet - a.ongoingNet);
+
+  const total = Object.values(spend).reduce((x,y)=>x+y,0);
+  const top = results[0];
+
+  $("headline").innerHTML = `
+    <div><span class="muted">你的年消费合计</span>：<b class="money">${fmt0(total)}</b></div>
+    <div class="right">
+      <span class="badge">按后续年净收益最优</span>
+      <b>${top.card.name}</b>
+      <span class="badge">后续年净收益：<b class="money">${fmt2(top.ongoingNet)}</b></span>
+      <span class="badge">首年净收益：<b class="money">${fmt2(top.firstYearNet)}</b></span>
+    </div>
+  `;
+
+  const tbody = $("tbody");
+  tbody.innerHTML = "";
+
+  results.forEach((r, idx)=>{
+    const feeText = (r.firstYearFee !== r.card.annualFee)
+      ? `首年${fmt0(r.firstYearFee)} / 后续${fmt0(r.card.annualFee)}`
+      : `${fmt0(r.card.annualFee)}`;
+
+    const estText = (r.card.currency === "points")
+      ? `${r.card.cppCents.toFixed(2)}¢/点`
+      : "现金";
+
+    const breakevenText = (r.breakeven === Infinity) ? "—" : (r.breakeven === 0 ? "$0" : fmt0(r.breakeven));
+
+    const fyClass = r.firstYearNet >= 0 ? "good" : "bad";
+    const oyClass = r.ongoingNet   >= 0 ? "good" : "bad";
+
+    const earn = r.value + r.credits;
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${idx+1}</td>
+      <td>
+        <b>${r.card.name}</b>
+        <div class="muted" style="margin-top:4px;">
+          ${r.card.currency === "points" ? "点数卡（按本卡¢/点换算）" : "现金回报卡"}
+          ${r.card.credits ? ` · 年度报销：$${r.card.credits.amount}` : ""}
+        </div>
+      </td>
+      <td class="money">${feeText}</td>
+      <td>${estText}</td>
+      <td class="money">${fmt2(earn)}</td>
+      <td class="money ${fyClass}">${fmt2(r.firstYearNet)}</td>
+      <td class="money ${oyClass}">${fmt2(r.ongoingNet)}</td>
+      <td class="money">${breakevenText}</td>
+      <td>${r.card.notes}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  $("rulesDump").textContent = JSON.stringify(CARDS, null, 2);
+}
+
+// listeners
+["spend_dining","spend_travel","spend_grocery","spend_gas","spend_stream","spend_other","includeBonus","firstYearFeeWaive"]
+  .forEach(id => $(id).addEventListener("input", render));
+
+$("btnConservative").addEventListener("click", ()=>applyPreset("conservative"));
+$("btnBaseline").addEventListener("click", ()=>applyPreset("baseline"));
+$("btnAggressive").addEventListener("click", ()=>applyPreset("aggressive"));
+
+$("resetBtn").addEventListener("click", ()=>{
+  $("spend_dining").value = 6000;
+  $("spend_travel").value = 4000;
+  $("spend_grocery").value = 6000;
+  $("spend_gas").value = 1500;
+  $("spend_stream").value = 600;
+  $("spend_other").value = 12000;
+  $("includeBonus").checked = true;
+  $("firstYearFeeWaive").checked = true;
+
+  // reset cpp defaults
+  CARDS.forEach(c=>{
+    if (c.id === "csp") c.cppCents = 1.25;
+    else if (c.currency === "points") c.cppCents = 1.00;
+  });
+
+  // sync cpp inputs
+  CARDS.forEach(c=>{
+    if (c.currency==="points"){
+      const el = document.getElementById(`cpp_${c.id}`);
+      if (el) el.value = c.cppCents.toFixed(2);
+    }
+  });
+
+  render();
+});
+
+// init
+renderCppInputs();
+render();
+</script>
+</body>
+</html>
